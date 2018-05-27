@@ -1,7 +1,8 @@
 const canvas = document.querySelector('canvas');
+let t = 0;
 const ctx = canvas.getContext('2d');
-const gridh = 25;
-const gridw = 25;
+const gridh = 18;
+const gridw = 18;
 const sl = 25;
 const sgrid = new Array(gridh).fill(new Array(gridw).fill(0))
 
@@ -119,6 +120,7 @@ function restart(){
   snake.parts = [[0,1]]
   snake.keys.clear();
   snake.keys.ArrowRight = true;
+  t = 0;
 }
 
 function draw(){
@@ -131,6 +133,9 @@ function draw(){
 }
 
 function update(){
+
+	const score = document.querySelector('#score');
+  const time = document.querySelector('#time');
 	checkFoodSnakeCollide();
 	if(snake.keys.ArrowRight){
   	snake.x += 1;
@@ -158,6 +163,18 @@ function update(){
   if(headCheck()){
   	restart();
   }
+  
+  score.innerHTML = snake.parts.length - 1;
+  if (t === 0){
+  	time.innerHTML = 0;
+    t += 100;
+  } else if(t%1000 === 0) {
+  	time.innerHTML = t/1000;
+    t+=100;
+  } else {
+  	t+=100;
+  }
+  
 }
 
 document.addEventListener('keydown', (e) => {
